@@ -25,7 +25,7 @@ class ProductClass(models.Model):
     productClassId = models.AutoField(primary_key=True)
     parentProductClassId = models.ForeignKey(ParentProductClass)  # 商品类型所属父类
     className = models.CharField(max_length=20)  # 商品类型名称
-    isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)      #是否启用
+    isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)
     createTime = models.DateTimeField(auto_now_add=True)  # 创建时间
 
     def __str__(self):
@@ -36,8 +36,8 @@ class ProductClass(models.Model):
 class Material(models.Model):
     materialId = models.AutoField(primary_key=True)
     materialName = models.CharField(max_length=20)  # 材质名称
-    isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)  # 是否启用
-    createTime = models.DateTimeField(auto_now_add=True)  # 创建时间
+    isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)
+    createTime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.materialName
@@ -46,8 +46,8 @@ class Material(models.Model):
 @python_2_unicode_compatible
 class Colors(models.Model):
     colorId = models.AutoField(primary_key=True)
-    colorName = models.CharField(max_length=32)  # 颜色名称
-    createTime = models.DateTimeField(auto_now_add=True)  # 创建时间
+    colorName = models.CharField(max_length=32)
+    createTime = models.DateTimeField(auto_now_add=True)
     isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)
 
     def __str__(self):
@@ -58,15 +58,15 @@ class Colors(models.Model):
 class Product(models.Model):
     productId = models.CharField(max_length=36, primary_key=True)
     productClassId = models.ForeignKey(ProductClass)  # 所属商品类
-    productName = models.CharField(max_length=50)  # 商品名称
-    productPrice = models.DecimalField(max_digits=20, decimal_places=2)  # 商品价格
+    productName = models.CharField(max_length=50)
+    productPrice = models.DecimalField(max_digits=20, decimal_places=2)
     productRemainder = models.IntegerField()   # 商品库存/余量
-    productIntroduction = models.TextField(blank=True, null=True)   # 商品介绍
+    productIntroduction = models.TextField(blank=True, null=True)
     isRecommendation = models.BooleanField(default=1)  # 是否推荐
-    isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)  # 是否启用
-    picture = models.CharField(max_length=300, default=0, blank=True, null=True)  #商品图片
+    isShow = models.BooleanField("是否启用", choices=yes_or_no, default=True)
+    picture = models.CharField(max_length=300, default=0, blank=True, null=True)
     miniPicture = models.CharField(max_length=300, default=0, blank=True, null=True)
-    createTime = models.DateTimeField(auto_now_add=True)  # 创建时间
+    createTime = models.DateTimeField(auto_now_add=True)
     productInfo = models.TextField(blank=True, null=True)  # 商品详细信息
 
     def __str__(self):

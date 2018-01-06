@@ -27,3 +27,26 @@ def getProvince(req):
     province = Province.objects.filter(isShow=True)
     data = serializers.serialize("json", province)
     return HttpResponse(data)
+
+
+def getArea(req):
+    area = Area.objects.filter(provinceId=req.GET['provinceId'], isShow=True)
+    data = serializers.serialize("json", area)
+    return HttpResponse(data)
+
+
+def getUsers(req):
+    users = User.objects.filter(provinceId=req.GET['provinceId'], areaId=req.GET['areaId'], isShow=True)
+    data = []
+    for i in users:
+        info = {}
+        info['userId'] = users[i].userId
+        info['userName'] = users[i].userName
+        info['areaName'] = users.areaId.areaName
+        info['provinceName'] = users.areaId.provinceId.provinceName
+        info['registerTime'] = users.registerTime
+        info['loginTime'] = users.loginTime
+        info['isShow'] = users.isShow
+        data.append(info)
+    print data
+    return HttpResponse(json.dumps(data))
