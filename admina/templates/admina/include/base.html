@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/theme.css">
+    <link rel="stylesheet" href="/static/css/all.css">
+    <title>{% block title %} {% endblock %}</title>
+    {% block link %}{% endblock %}
+    {% block style %}{% endblock %}
+</head>
+<body>
+<div></div>
+{% include "admina/include/left-nav.html" %}
+{% include "admina/include/top.html" %}
+{% block content %}{% endblock %}
+
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+<script src="/static/js/jquery-2.0.3.min.js"></script>
+
+{% block script %}{% endblock %}
+</body>
+</html>
