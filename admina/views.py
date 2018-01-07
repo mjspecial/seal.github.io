@@ -13,7 +13,7 @@ import json
 def login(req):
     if req.method == "GET":
         fs = LoginForm()
-        return render(req, "admina/login.html", {"fs":fs})
+        return render(req, "admina/login.html", {"fs": fs})
 
 
 def index(req):
@@ -36,17 +36,29 @@ def getArea(req):
 
 
 def getUsers(req):
-    users = User.objects.filter(provinceId=req.GET['provinceId'], areaId=req.GET['areaId'], isShow=True)
+    users = User.objects.filter(isShow=True)
     data = []
-    for i in users:
+
+    areaId = req.GET.get("areaId", "0")
+    if areaId != "0":
+        users = users.filter(areaId=areaId)
+
+    orderByWay = {"0": "-loginTime", "1": "loginTime", "2": "-registerTime", "3": "registerTime",
+                  "4": "-areaId__areaName", "5": "areaId__areaName", "6": "-userName", "7": "userName"}
+
+    orderBy = orderByWay[req.GET["orderById"]]
+    # orderBy = orderByWay[req.GET.get("orderById", "0")]
+    users = users.order_by(orderBy)
+
+
+    for user in users:
         info = {}
-        info['userId'] = users[i].userId
-        info['userName'] = users[i].userName
-        info['areaName'] = users.areaId.areaName
-        info['provinceName'] = users.areaId.provinceId.provinceName
-        info['registerTime'] = users.registerTime
-        info['loginTime'] = users.loginTime
-        info['isShow'] = users.isShow
+        info['userId'] = user.userId
+        info['userName'] = user.userName
+        info['areaName'] = user.areaId.areaName
+        info['provinceName'] = user.areaId.provinceId.provinceName
+        info['registerTime'] = user.registerTime.strftime("%Y-%m-%d-%H:%M:%S")
+        info['loginTime'] = user.loginTime.strftime("%Y-%m-%d-%H:%M:%S")
+        info['isShow'] = user.isShow
         data.append(info)
-    print data
     return HttpResponse(json.dumps(data))

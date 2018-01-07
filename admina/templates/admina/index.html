@@ -91,23 +91,29 @@ $(function() {
     });
 
     $("#province").change(function() {
-        if(this.value !== 0) {
-            $.get("/admina/getArea", {"provinceId": this.value}, function(data) {
-                var jsonData = $.parseJSON(data);
-                var str = "";
-                for(var i in jsonData) {
-                    str += "<option value="+ jsonData[i].pk +">" + jsonData[i].fields.areaName +"</option>";
-                }
-                $("#area").append(str);
-            });
+        if(this.value === "0" ) {
+            location.reload();
         }
+        $.get("/admina/getArea", {"provinceId": this.value}, function(data) {
+            var jsonData = $.parseJSON(data);
+            var str = "<option value=0>请选择</option>";
+            for(var i in jsonData) {
+                str += "<option value="+ jsonData[i].pk +">" + jsonData[i].fields.areaName +"</option>";
+            }
+            $("#area").empty().append(str);
+        });
+    });
+
+    $("#area, .orderBy").change(function() {
+        appendUserInfo();
     });
 });
 
 function appendUserInfo() {
-    var provinceId = $("#province").val();
-    var areaId = $("#area").val();
-    $.get("/admina/getUsers",{"provinceId": provinceId, "areaId": areaId}, function(data) {
+    var getData ={}
+    getData['areaId'] = $("#area").val();
+    getData['orderById'] = $(".orderBy").val();
+    $.get("/admina/getUsers", getData, function(data) {
         var jsonData = $.parseJSON(data);
         var str = "";
         for(var i in jsonData) {
@@ -120,7 +126,10 @@ function appendUserInfo() {
                     "<td><a href=''>管理</a><a href=''>查看</a></td>" +
                     "</tr>"
         }
+        $(".lists").empty().append(str);
     })
 }
+
+
 </script>
 {% endblock %}
